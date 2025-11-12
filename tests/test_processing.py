@@ -29,17 +29,37 @@ def sample_text():
 
 def test_remove_missing_values(sample_missing_val_list):
     out = preprocessing.remove_missing_values(sample_missing_val_list)
-    assert out == [1,2,3,0] 
+    assert out == [1,2,3,0]
+
+@pytest.mark.parametrize(
+    "input_list, expected",
+    [
+        ([1, None, 2, ""], [1, 2]),
+        ([None, "", float("nan")], [])
+    ]
+)
+def test_remove_missing_values_param(input_list, expected):
+    assert preprocessing.remove_missing_values(input_list) == expected
 
 
 def test_fill_missing_values(sample_missing_val_list):
     out = preprocessing.fill_missing_values(sample_missing_val_list)
-    assert out == [1,0,2,0,0,3,0] 
+    assert out == [1,0,2,0,0,3,0]
+
+@pytest.mark.parametrize(
+    "input_list, fill_val, expected",
+    [
+        ([1, None, ""], 0, [1, 0, 0]),
+        ([None, 2, ""], 99, [99, 2, 99])
+    ]
+)
+def test_fill_missing_values_param(input_list, fill_val, expected):
+    assert preprocessing.fill_missing_values(input_list, fill_val) == expected
 
 
 def test_unique_values(sample_repeated_val_list):
     out = preprocessing.unique_values(sample_repeated_val_list)
-    assert out == [1,3,4,2] 
+    assert out == [1,3,4,2]
 
 
 def test_min_max_normalization(sample_numeric_val_list):
@@ -72,6 +92,11 @@ def test_log_transform(sample_numeric_val_list):
         abs=1e-4
     )
 
+def test_log_transform_with_zero_and_negative():
+    input_data = [1, 0, -1, 10]
+    out = preprocessing.log_transform(input_data)
+    assert out == pytest.approx([0.0, 2.3025], abs=1e-4)  
+
 
 def test_tokenize_text(sample_text):
     out = preprocessing.tokenize_text(sample_text)
@@ -88,9 +113,25 @@ def test_stopword_removal(sample_text):
     out = preprocessing.stopwords_removal(sample_text, stopwords)
     assert out == "hello world test 123"
 
+@pytest.mark.parametrize(
+    "text, stopwords, expected",
+    [
+        ("Hello World", [], "hello world"),
+        ("Hello World", ["hello"], "world"),
+        ("HELLO world", ["hello"], "world")
+    ]
+)
+def test_stopwords_removal_param(text, stopwords, expected):
+    assert preprocessing.stopwords_removal(text, stopwords) == expected
+
 
 def test_flatten_list():
     input_data = [[1, 2], [3, 4], [5]]
+    out = preprocessing.flatten_list(input_data)
+    assert out == [1, 2, 3, 4, 5]
+
+def test_flatten_list_nested():
+    input_data = [1, [2, [3, 4]], 5]
     out = preprocessing.flatten_list(input_data)
     assert out == [1, 2, 3, 4, 5]
 
@@ -101,3 +142,7 @@ def test_shuffle_list(sample_numeric_val_list, seed=123):
     expected = sample_numeric_val_list.copy()
     random.shuffle(expected)
     assert out == expected
+
+def test_shuffle_list_no_seed(sample_numeric_val_list):
+    out = preprocessing.shuffle_list(sample_numeric_val_list)
+    assert sorted(out) == sorted(sample_numeric_val_list)

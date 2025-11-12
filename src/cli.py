@@ -46,7 +46,7 @@ def remove_missing(values):
     """Remove None, empty strings or NaN from a list."""
     values = json.loads(values)
     result = preprocessing.remove_missing_values(values)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @clean.command(
@@ -59,7 +59,7 @@ def fill_missing(values, fill_val):
     """Fill missing values in a list with a given value."""
     values = json.loads(values)
     result = preprocessing.fill_missing_values(values, fill_val)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @cli.group(help="Functions related to numerical attributes.")
@@ -78,7 +78,7 @@ def normalize(values, min_range, max_range):
     """Apply min-max normalization to a list of numbers."""
     values = json.loads(values)
     result = preprocessing.min_max_normalization(values, min_range, max_range)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @numeric.command(
@@ -90,7 +90,7 @@ def standardize(values):
     """Apply z-score normalization to a list of numbers."""
     values = json.loads(values)
     result = preprocessing.z_score_normalization(values)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @numeric.command(
@@ -104,7 +104,7 @@ def clip(values, min_val, max_val):
     """Clip numbers to be within a minimum and maximum range."""
     values = json.loads(values)
     result = preprocessing.clipping(values, min_val, max_val)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @numeric.command(
@@ -115,7 +115,7 @@ def to_int(values):
     """Convert a list of values to integers, skipping invalid ones."""
     values = json.loads(values)
     result = preprocessing.convert_to_int(values)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @numeric.command(
@@ -126,7 +126,7 @@ def log(values):
     """Apply logarithmic transformation to positive numbers."""
     values = json.loads(values)
     result = preprocessing.log_transform(values)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @cli.group(help="Functions to process textual information.")
@@ -139,7 +139,7 @@ def text():
 def tokenize(input_text):
     """Split text into lowercase alphanumeric tokens."""
     result = preprocessing.tokenize_text(input_text)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @text.command(
@@ -179,7 +179,7 @@ def shuffle(values, seed):
     """Shuffle a list randomly; can set a seed for reproducibility."""
     values = json.loads(values)
     result = preprocessing.shuffle_list(values, seed)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @struct.command(
@@ -190,7 +190,7 @@ def flatten(values):
     """Flatten a nested list into a single-level list."""
     values = json.loads(values)
     result = preprocessing.flatten_list(values)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @struct.command(
@@ -201,7 +201,7 @@ def unique(values):
     """Return a list of unique values, preserving order."""
     values = json.loads(values)
     result = preprocessing.unique_values(values)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 if __name__ == "__main__":
