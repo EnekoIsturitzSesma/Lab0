@@ -5,7 +5,7 @@ Command-line interface (CLI) for the data preprocessing module.
 
 This CLI provides access to functions for:
 - Data cleaning (removing or filling missing values)
-- Numerical preprocessing (normalization, standardization, clipping, 
+- Numerical preprocessing (normalization, standardization, clipping,
     log transform, integer conversion)
 - Text processing (tokenization, punctuation removal, stop-words removal)
 - Data structure operations (flattening lists, shuffling, getting unique values)
@@ -50,8 +50,8 @@ def remove_missing(values):
 
 
 @clean.command(
-    help="Fill missing values in a list. Example: clean fill-missing " +
-    "'[1, None, \"\", 3]' --fill_val 0"
+    help="Fill missing values in a list. Example: clean fill-missing "
+    + "'[1, None, \"\", 3]' --fill_val 0"
 )
 @click.argument("values")
 @click.option("--fill_val", default=0, help="Value used to replace missing elements.")
@@ -68,8 +68,8 @@ def numeric():
 
 
 @numeric.command(
-    help="Normalize a list of numbers to a given range. Example: numeric normalize " +
-    "'[1,2,3]' --min_range 0 --max_range 1"
+    help="Normalize a list of numbers to a given range. Example: numeric normalize "
+    + "'[1,2,3]' --min_range 0 --max_range 1"
 )
 @click.argument("values")
 @click.option("--min_range", default=0.0, help="Minimum value of new range.")
@@ -82,8 +82,8 @@ def normalize(values, min_range, max_range):
 
 
 @numeric.command(
-    help="Standardize a list of numbers using z-score normalization. " +
-    "Example: numeric standardize '[1,2,3]'"
+    help="Standardize a list of numbers using z-score normalization. "
+    + "Example: numeric standardize '[1,2,3]'"
 )
 @click.argument("values")
 def standardize(values):
@@ -94,8 +94,8 @@ def standardize(values):
 
 
 @numeric.command(
-    help="Clip a list of numbers within a specified range. Example: numeric clip " +
-    "'[1,2,3,4]' --min_val 1 --max_val 3"
+    help="Clip a list of numbers within a specified range. Example: numeric clip "
+    + "'[1,2,3,4]' --min_val 1 --max_val 3"
 )
 @click.argument("values")
 @click.option("--min_val", default=0.0, help="Minimum value to clip.")
@@ -153,8 +153,8 @@ def remove_punctuation(input_text):
 
 
 @text.command(
-    help="Remove stop words from text. Example: " +
-    "text remove-stopwords 'this is an example' --stopwords '[\"this\",\"is\"]'"
+    help="Remove stop words from text. Example: "
+    + "text remove-stopwords 'this is an example' --stopwords '[\"this\",\"is\"]'"
 )
 @click.argument("input_text")
 @click.option("--stopwords", default="[]", help="List of stop words to remove.")
